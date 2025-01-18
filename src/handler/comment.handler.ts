@@ -57,13 +57,13 @@ export class CommentHandler {
     if (actorId === parentComment[0].writerId) return;
 
     const notification: CommentNotification = {
-      id: uuid(),
       userId: parentComment[0].writerId,
-      actorId,
-      actorName: actor[0].name,
+      createdAt: Date.now().toString(),
+      id: uuid(),
       type: 'COMMENT',
       isRead: false,
-      createdAt: Date.now().toString(),
+      actorId,
+      actorName: actor[0].name,
       feedId,
       expiresAt: (Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30).toString(),
     };
@@ -75,17 +75,7 @@ export class CommentHandler {
   async saveNotification(notification: CommentNotification) {
     const command = new PutCommand({
       TableName: 'Notification',
-      Item: {
-        userId: { S: notification.userId },
-        createdAt: { N: notification.createdAt },
-        id: { S: notification.id },
-        type: { S: notification.type },
-        isRead: { BOOL: notification.isRead },
-        actorId: { S: notification.actorId },
-        actorName: { S: notification.actorName },
-        feedId: { S: notification.feedId },
-        expiresAt: { N: notification.expiresAt },
-      },
+      Item: notification,
     });
 
     await this.ddbClient.send(command);

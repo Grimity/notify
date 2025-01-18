@@ -17,28 +17,19 @@ export class FollowHandler {
     if (!actor[0]) return;
 
     const notification: FollowNotification = {
-      id: uuid(),
       userId,
-      actorId,
-      actorName: actor[0].name,
+      createdAt: Date.now().toString(),
+      id: uuid(),
       type: 'FOLLOW',
       isRead: false,
-      createdAt: Date.now(),
-      expiresAt: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
+      actorId,
+      actorName: actor[0].name,
+      expiresAt: (Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30).toString(),
     };
 
     const command = new PutCommand({
       TableName: 'Notification',
-      Item: {
-        userId: { S: notification.userId },
-        createdAt: { N: notification.createdAt.toString() },
-        id: { S: notification.id },
-        type: { S: notification.type },
-        isRead: { BOOL: notification.isRead },
-        actorId: { S: notification.actorId },
-        actorName: { S: notification.actorName },
-        expiresAt: { N: notification.expiresAt.toString() },
-      },
+      Item: notification,
     });
 
     await this.ddbClient.send(command);
@@ -52,6 +43,6 @@ type FollowNotification = {
   actorName: string;
   type: 'FOLLOW';
   isRead: boolean;
-  createdAt: number;
-  expiresAt: number;
+  createdAt: string;
+  expiresAt: string;
 };
