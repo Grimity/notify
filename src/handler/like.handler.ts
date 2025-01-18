@@ -10,13 +10,13 @@ export class LikeHandler {
   async notify({ actorId, feedId }: LikeEvent) {
     const feed = await this.db
       .selectFrom('Feed')
-      .where('id', '=', 'feedId')
+      .where('id', '=', feedId)
       .select('authorId')
       .execute();
 
     const actor = await this.db
       .selectFrom('User')
-      .where('id', '=', 'actorId')
+      .where('id', '=', actorId)
       .select('name')
       .execute();
 

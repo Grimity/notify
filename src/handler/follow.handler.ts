@@ -10,7 +10,7 @@ export class FollowHandler {
   async notify({ actorId, userId }: FollowEvent) {
     const actor = await this.db
       .selectFrom('User')
-      .where('id', '=', 'actorId')
+      .where('id', '=', actorId)
       .select('name')
       .execute();
 

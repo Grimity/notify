@@ -10,13 +10,13 @@ export class CommentHandler {
   async notify({ actorId, feedId, parentCommentId }: CommentEvent) {
     const actor = await this.db
       .selectFrom('User')
-      .where('id', '=', 'actorId')
+      .where('id', '=', actorId)
       .select('name')
       .execute();
 
     const author = await this.db
       .selectFrom('Feed')
-      .where('id', '=', 'feedId')
+      .where('id', '=', feedId)
       .select('authorId')
       .execute();
 
@@ -47,7 +47,7 @@ export class CommentHandler {
 
     const parentComment = await this.db
       .selectFrom('FeedComment')
-      .where('id', '=', 'parentCommentId')
+      .where('id', '=', parentCommentId)
       .select('writerId')
       .execute();
 
