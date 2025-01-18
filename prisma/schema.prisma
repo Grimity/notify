@@ -1,0 +1,111 @@
+generator kysely {
+  provider = "prisma-kysely"
+  output   = "../src/db"
+  fileName = "types.ts"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid()) @db.Uuid
+  provider    String
+  providerId  String
+  email       String
+  name        String   @unique
+  image       String?
+  description String   @default("")
+  links       String[]
+
+  createdAt DateTime @default(now())
+
+  followers    Follow[]      @relation("following")
+  followings   Follow[]      @relation("follower")
+  feeds        Feed[]
+  likes        Like[]
+  feedComments FeedComment[]
+  views        View[]
+
+  @@unique([provider, providerId])
+}
+
+model Follow {
+  followerId  String @db.Uuid
+  followingId String @db.Uuid
+
+  follower  User @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@id([followerId, followingId])
+  @@index([followingId])
+}
+
+model Feed {
+  id        String   @id @default(uuid()) @db.Uuid
+  authorId  String   @db.Uuid
+  title     String
+  cards     String[]
+  isAI      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  viewCount Int      @default(0)
+  likeCount Int      @default(0)
+  content   String   @default("")
+  tags      Tag[]
+
+  author       User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  likes        Like[]
+  feedComments FeedComment[]
+  views        View[]
+
+  @@index([authorId])
+  @@index([createdAt(sort: Desc)])
+}
+
+model Tag {
+  feedId  String @db.Uuid
+  tagName String
+
+  feed Feed @relation(fields: [feedId], references: [id], onDelete: Cascade)
+
+  @@id([feedId, tagName])
+}
+
+model Like {
+  userId    String   @db.Uuid
+  feedId    String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  feed Feed @relation(fields: [feedId], references: [id], onDelete: Cascade)
+
+  @@id([userId, feedId])
+}
+
+model View {
+  userId    String   @db.Uuid
+  feedId    String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  feed Feed @relation(fields: [feedId], references: [id], onDelete: Cascade)
+
+  @@id([userId, feedId])
+}
+
+model FeedComment {
+  id        String   @id @default(uuid()) @db.Uuid
+  feedId    String   @db.Uuid
+  writerId  String   @db.Uuid
+  parentId  String?  @db.Uuid
+  content   String
+  createdAt DateTime @default(now())
+
+  writer        User          @relation(fields: [writerId], references: [id], onDelete: Cascade)
+  feed          Feed          @relation(fields: [feedId], references: [id], onDelete: Cascade)
+  parent        FeedComment?  @relation("ChildComments", fields: [parentId], references: [id], onDelete: Cascade)
+  childComments FeedComment[] @relation("ChildComments")
+
+  @@index([feedId])
+}
