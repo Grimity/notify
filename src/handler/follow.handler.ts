@@ -18,7 +18,7 @@ export class FollowHandler {
 
     const notification: FollowNotification = {
       userId,
-      createdAt: Date.now().toString(),
+      createdAt: Date.now(),
       id: uuid(),
       type: 'FOLLOW',
       isRead: false,
@@ -43,6 +43,6 @@ type FollowNotification = {
   actorName: string;
   type: 'FOLLOW';
   isRead: boolean;
-  createdAt: string;
+  createdAt: number;
   expiresAt: string;
 };
