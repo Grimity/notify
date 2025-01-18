@@ -31,12 +31,9 @@ export class CommentHandler {
         actorName: actor[0].name,
         type: 'COMMENT',
         isRead: false,
-        createdAt: Date.now().toString(),
+        createdAt: Date.now(),
         feedId,
-        expiresAt: (
-          Math.floor(Date.now() / 1000) +
-          60 * 60 * 24 * 30
-        ).toString(),
+        expiresAt: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
       };
 
       await this.saveNotification(notification);
@@ -58,14 +55,14 @@ export class CommentHandler {
 
     const notification: CommentNotification = {
       userId: parentComment[0].writerId,
-      createdAt: Date.now().toString(),
+      createdAt: Date.now(),
       id: uuid(),
       type: 'COMMENT',
       isRead: false,
       actorId,
       actorName: actor[0].name,
       feedId,
-      expiresAt: (Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30).toString(),
+      expiresAt: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
     };
 
     await this.saveNotification(notification);
@@ -89,7 +86,7 @@ type CommentNotification = {
   actorName: string;
   type: 'COMMENT';
   isRead: boolean;
-  createdAt: string;
+  createdAt: number;
   feedId: string;
-  expiresAt: string;
+  expiresAt: number;
 };

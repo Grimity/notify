@@ -25,14 +25,14 @@ export class LikeHandler {
 
     const notification: LikeNotification = {
       userId: feed[0].authorId,
-      createdAt: Date.now().toString(),
+      createdAt: Date.now(),
       id: uuid(),
       type: 'LIKE',
       isRead: false,
       actorId,
       actorName: actor[0].name,
       feedId,
-      expiresAt: (Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30).toString(),
+      expiresAt: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
     };
 
     const command = new PutCommand({
@@ -51,7 +51,7 @@ type LikeNotification = {
   actorName: string;
   type: 'LIKE';
   isRead: boolean;
-  createdAt: string;
-  expiresAt: string;
+  createdAt: number;
+  expiresAt: number;
   feedId: string;
 };

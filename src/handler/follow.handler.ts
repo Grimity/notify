@@ -24,7 +24,7 @@ export class FollowHandler {
       isRead: false,
       actorId,
       actorName: actor[0].name,
-      expiresAt: (Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30).toString(),
+      expiresAt: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
     };
 
     const command = new PutCommand({
@@ -44,5 +44,5 @@ type FollowNotification = {
   type: 'FOLLOW';
   isRead: boolean;
   createdAt: number;
-  expiresAt: string;
+  expiresAt: number;
 };
