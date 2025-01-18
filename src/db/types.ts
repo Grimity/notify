@@ -33,14 +33,14 @@ export type Like = {
     createdAt: Generated<Timestamp>;
 };
 export type Notification = {
-    userId: string;
-    createdAt: Generated<Timestamp>;
     id: string;
+    userId: string;
     type: string;
     actorId: string;
     actorName: string;
     feedId: string | null;
     isRead: Generated<boolean>;
+    createdAt: Generated<Timestamp>;
 };
 export type Tag = {
     feedId: string;

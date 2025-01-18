@@ -1,11 +1,9 @@
 import type { Database } from 'src/db/database';
-import type { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { PutCommand } from '@aws-sdk/lib-dynamodb';
 import type { LikeEvent } from 'src/types';
 import { v4 as uuid } from 'uuid';
 
 export class LikeHandler {
-  constructor(private db: Database, private ddbClient: DynamoDBClient) {}
+  constructor(private db: Database) {}
 
   async notify({ actorId, feedId }: LikeEvent) {
     const feed = await this.db
@@ -23,35 +21,18 @@ export class LikeHandler {
     if (!feed[0] || actorId === feed[0].authorId) return;
     if (!actor[0]) return;
 
-    const notification: LikeNotification = {
-      userId: feed[0].authorId,
-      createdAt: Date.now(),
-      id: uuid(),
-      type: 'LIKE',
-      isRead: false,
-      actorId,
-      actorName: actor[0].name,
-      feedId,
-      expiresAt: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
-    };
+    await this.db
+      .insertInto('Notification')
+      .values({
+        id: uuid(),
+        userId: feed[0].authorId,
+        type: 'LIKE',
+        actorId,
+        actorName: actor[0].name,
+        feedId,
+      })
+      .execute();
 
-    const command = new PutCommand({
-      TableName: 'Notification',
-      Item: notification,
-    });
-
-    await this.ddbClient.send(command);
+    return;
   }
 }
-
-type LikeNotification = {
-  id: string;
-  userId: string;
-  actorId: string;
-  actorName: string;
-  type: 'LIKE';
-  isRead: boolean;
-  createdAt: number;
-  expiresAt: number;
-  feedId: string;
-};
