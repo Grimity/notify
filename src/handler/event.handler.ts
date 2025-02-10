@@ -51,7 +51,7 @@ export class EventHandler {
     const [user] = await this.db
       .selectFrom('Feed')
       .innerJoin('User', 'User.id', 'Feed.authorId')
-      .where('Feed.id', '==', feedId)
+      .where('Feed.id', '=', feedId)
       .select(['User.id', 'subscription'])
       .execute();
 
@@ -75,7 +75,7 @@ export class EventHandler {
     const [user] = await this.db
       .selectFrom('Feed')
       .innerJoin('User', 'User.id', 'Feed.authorId')
-      .where('Feed.id', '==', feedId)
+      .where('Feed.id', '=', feedId)
       .select(['User.id', 'subscription'])
       .execute();
 
@@ -88,7 +88,7 @@ export class EventHandler {
 
     const [actor] = await this.db
       .selectFrom('User')
-      .where('id', '==', actorId)
+      .where('id', '=', actorId)
       .select(['id', 'name', 'image'])
       .execute();
 
@@ -116,7 +116,7 @@ export class EventHandler {
     const [user] = await this.db
       .selectFrom('FeedComment')
       .innerJoin('User', 'User.id', 'FeedComment.writerId')
-      .where('FeedComment.id', '==', parentId)
+      .where('FeedComment.id', '=', parentId)
       .select(['User.id', 'subscription'])
       .execute();
 
@@ -129,7 +129,7 @@ export class EventHandler {
 
     const [actor] = await this.db
       .selectFrom('User')
-      .where('id', '==', actorId)
+      .where('id', '=', actorId)
       .select(['id', 'name', 'image'])
       .execute();
 
@@ -160,7 +160,7 @@ export class EventHandler {
   }: FeedMentionEvent) {
     const [user] = await this.db
       .selectFrom('User')
-      .where('id', '==', mentionedUserId)
+      .where('id', '=', mentionedUserId)
       .select(['id', 'subscription'])
       .execute();
 
@@ -168,7 +168,7 @@ export class EventHandler {
 
     const [actor] = await this.db
       .selectFrom('User')
-      .where('id', '==', actorId)
+      .where('id', '=', actorId)
       .select(['id', 'name', 'image'])
       .execute();
 
@@ -196,7 +196,7 @@ export class EventHandler {
     const [user] = await this.db
       .selectFrom('Post')
       .innerJoin('User', 'User.id', 'Post.authorId')
-      .where('Post.id', '==', postId)
+      .where('Post.id', '=', postId)
       .select(['User.id', 'subscription'])
       .execute();
 
@@ -209,7 +209,7 @@ export class EventHandler {
 
     const [actor] = await this.db
       .selectFrom('User')
-      .where('id', '==', actorId)
+      .where('id', '=', actorId)
       .select(['id', 'name', 'image'])
       .execute();
 
@@ -237,7 +237,7 @@ export class EventHandler {
     const [user] = await this.db
       .selectFrom('PostComment')
       .innerJoin('User', 'User.id', 'PostComment.writerId')
-      .where('PostComment.id', '==', parentId)
+      .where('PostComment.id', '=', parentId)
       .select(['User.id', 'subscription'])
       .execute();
 
@@ -250,7 +250,7 @@ export class EventHandler {
 
     const [actor] = await this.db
       .selectFrom('User')
-      .where('id', '==', actorId)
+      .where('id', '=', actorId)
       .select(['id', 'name', 'image'])
       .execute();
 
@@ -281,7 +281,7 @@ export class EventHandler {
   }: PostMentionEvent) {
     const [user] = await this.db
       .selectFrom('User')
-      .where('id', '==', mentionedUserId)
+      .where('id', '=', mentionedUserId)
       .select(['id', 'subscription'])
       .execute();
 
@@ -289,7 +289,7 @@ export class EventHandler {
 
     const [actor] = await this.db
       .selectFrom('User')
-      .where('id', '==', actorId)
+      .where('id', '=', actorId)
       .select(['id', 'name', 'image'])
       .execute();
 
