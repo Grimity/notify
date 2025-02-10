@@ -18,14 +18,14 @@ export const handler: SQSHandler = async (lambdaEvent: SQSEvent) => {
       await eventHandler.handleFeedLike(event);
     } else if (event.type === 'FEED_COMMENT') {
       await eventHandler.handleFeedComment(event);
-    } else if (event.type === 'FEED_ANSWER') {
-      await eventHandler.handleFeedAnswer(event);
+    } else if (event.type === 'FEED_REPLY') {
+      await eventHandler.handleFeedReply(event);
     } else if (event.type === 'FEED_MENTION') {
       await eventHandler.handleFeedMention(event);
     } else if (event.type === 'POST_COMMENT') {
       await eventHandler.handlePostComment(event);
-    } else if (event.type === 'POST_ANSWER') {
-      await eventHandler.handlePostAnswer(event);
+    } else if (event.type === 'POST_REPLY') {
+      await eventHandler.handlePostReply(event);
     } else if (event.type === 'POST_MENTION') {
       await eventHandler.handlePostMention(event);
     }

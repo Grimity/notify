@@ -3,9 +3,9 @@ import type {
   FollowEvent,
   FeedLikeEvent,
   FeedCommentEvent,
-  FeedAnswerEvent,
+  FeedReplyEvent,
   FeedMentionEvent,
-  PostAnswerEvent,
+  PostReplyEvent,
   PostCommentEvent,
   PostMentionEvent,
 } from 'src/types';
@@ -112,7 +112,7 @@ export class EventHandler {
       .execute();
   }
 
-  async handleFeedAnswer({ feedId, actorId, parentId }: FeedAnswerEvent) {
+  async handleFeedReply({ feedId, actorId, parentId }: FeedReplyEvent) {
     const [user] = await this.db
       .selectFrom('FeedComment')
       .innerJoin('User', 'User.id', 'FeedComment.writerId')
@@ -123,7 +123,7 @@ export class EventHandler {
     if (
       !user ||
       user.id === actorId ||
-      !user.subscription.includes('FEED_ANSWER')
+      !user.subscription.includes('FEED_REPLY')
     )
       return;
 
@@ -141,7 +141,7 @@ export class EventHandler {
         id: uuid(),
         userId: user.id,
         data: {
-          type: 'FEED_ANSWER',
+          type: 'FEED_REPLY',
           feedId,
           actor: {
             id: actor.id,
@@ -233,7 +233,7 @@ export class EventHandler {
       .execute();
   }
 
-  async handlePostAnswer({ postId, actorId, parentId }: PostAnswerEvent) {
+  async handlePostReply({ postId, actorId, parentId }: PostReplyEvent) {
     const [user] = await this.db
       .selectFrom('PostComment')
       .innerJoin('User', 'User.id', 'PostComment.writerId')
@@ -244,7 +244,7 @@ export class EventHandler {
     if (
       !user ||
       user.id === actorId ||
-      !user.subscription.includes('POST_ANSWER')
+      !user.subscription.includes('POST_REPLY')
     )
       return;
 
@@ -262,7 +262,7 @@ export class EventHandler {
         id: uuid(),
         userId: user.id,
         data: {
-          type: 'POST_ANSWER',
+          type: 'POST_REPLY',
           postId,
           actor: {
             id: actor.id,

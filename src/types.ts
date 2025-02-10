@@ -16,8 +16,8 @@ export type FeedCommentEvent = {
   actorId: string;
 };
 
-export type FeedAnswerEvent = {
-  type: 'FEED_ANSWER';
+export type FeedReplyEvent = {
+  type: 'FEED_REPLY';
   feedId: string;
   actorId: string;
   parentId: string;
@@ -36,8 +36,8 @@ export type PostCommentEvent = {
   actorId: string;
 };
 
-export type PostAnswerEvent = {
-  type: 'POST_ANSWER';
+export type PostReplyEvent = {
+  type: 'POST_REPLY';
   postId: string;
   actorId: string;
   parentId: string;
@@ -54,16 +54,16 @@ export type Event =
   | FollowEvent
   | FeedLikeEvent
   | FeedCommentEvent
-  | FeedAnswerEvent
+  | FeedReplyEvent
   | FeedMentionEvent
   | PostCommentEvent
-  | PostAnswerEvent
+  | PostReplyEvent
   | PostMentionEvent;
 
 export type SubscriptionType =
   | 'FOLLOW'
   | 'FEED_LIKE'
   | 'FEED_COMMENT'
-  | 'FEED_ANSWER'
+  | 'FEED_REPLY'
   | 'POST_COMMENT'
-  | 'POST_ANSWER';
+  | 'POST_REPLY';
