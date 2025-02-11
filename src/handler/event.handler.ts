@@ -15,20 +15,13 @@ export class EventHandler {
   constructor(private db: Database) {}
 
   async handleFollow({ actorId, userId }: FollowEvent) {
-    const users = await this.db
+    const [actor] = await this.db
       .selectFrom('User')
-      .where('id', 'in', [actorId, userId])
-      .select(['id', 'name', 'subscription', 'image'])
+      .where('id', '=', actorId)
+      .select(['id', 'name', 'image'])
       .execute();
 
-    const actor = users.find((user) => user.id === actorId);
-    const user = users.find((user) => user.id === userId);
-
-    if (!actor || !user) {
-      return;
-    }
-
-    if (!user.subscription.includes('FOLLOW')) return;
+    if (!actor) return;
 
     await this.db
       .insertInto('Notification')
@@ -52,7 +45,7 @@ export class EventHandler {
       .selectFrom('Feed')
       .innerJoin('User', 'User.id', 'Feed.authorId')
       .where('Feed.id', '=', feedId)
-      .select(['User.id', 'subscription'])
+      .select(['User.id', 'subscription', 'thumbnail', 'title'])
       .execute();
 
     if (!user || !user.subscription.includes('FEED_LIKE')) return;
@@ -66,6 +59,8 @@ export class EventHandler {
           type: 'FEED_LIKE',
           feedId,
           likeCount,
+          thumbnail: user.thumbnail,
+          title: user.title,
         },
       })
       .execute();
