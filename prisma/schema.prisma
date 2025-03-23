@@ -11,6 +11,7 @@ datasource db {
 
 model User {
   id              String   @id @default(uuid()) @db.Uuid
+  url             String   @unique
   provider        String
   providerId      String
   email           String
@@ -18,7 +19,7 @@ model User {
   image           String?
   description     String   @default("")
   backgroundImage String?
-  links           String[]
+  links           String[] @default([])
   followerCount   Int      @default(0)
   subscription    String[] @default(["FOLLOW", "FEED_LIKE", "FEED_COMMENT", "FEED_REPLY", "POST_COMMENT", "POST_REPLY"])
 
@@ -38,14 +39,16 @@ model User {
   postSaves           PostSave[]
   postComments        PostComment[]     @relation("PostCommentWrite")
   postCommentMentions PostComment[]     @relation("MentionedUser")
-  PostCommentLike     PostCommentLike[]
+  postCommentLike     PostCommentLike[]
+  refreshToken        RefreshToken[]
 
   @@unique([provider, providerId])
 }
 
 model Follow {
-  followerId  String @db.Uuid
-  followingId String @db.Uuid
+  followerId  String   @db.Uuid
+  followingId String   @db.Uuid
+  createdAt   DateTime @default(now())
 
   follower  User @relation("follower", fields: [followerId], references: [id], onDelete: Cascade)
   following User @relation("following", fields: [followingId], references: [id], onDelete: Cascade)
@@ -73,7 +76,7 @@ model Feed {
   views    View[]
   saves    Save[]
 
-  @@index([authorId])
+  @@index([authorId, createdAt(sort: Desc)])
   @@index([createdAt(sort: Desc)])
 }
 
@@ -96,6 +99,7 @@ model Like {
   feed Feed @relation(fields: [feedId], references: [id], onDelete: Cascade)
 
   @@id([userId, feedId])
+  @@index([feedId])
 }
 
 model View {
@@ -147,7 +151,7 @@ model Notification {
   createdAt DateTime @default(now())
   data      Json
 
-  @@index([userId])
+  @@index([userId, createdAt(sort: Desc)])
 }
 
 model FeedCommentLike {
@@ -166,7 +170,7 @@ model Post {
   title        String
   content      String
   type         Int      @db.SmallInt
-  hasImage     Boolean  @default(false)
+  thumbnail    String?
   createdAt    DateTime @default(now())
   viewCount    Int      @default(0)
   commentCount Int      @default(0)
@@ -176,7 +180,7 @@ model Post {
   saves    PostSave[]
   comments PostComment[]
 
-  @@index([authorId])
+  @@index([authorId, createdAt(sort: Desc)])
   @@index([createdAt(sort: Desc)])
   @@index([type(sort: Asc), createdAt(sort: Desc)])
 }
@@ -220,7 +224,7 @@ model PostComment {
   mentionedUser User?             @relation("MentionedUser", fields: [mentionedUserId], references: [id], onDelete: SetNull)
   likes         PostCommentLike[]
 
-  @@index([postId])
+  @@index([postId, createdAt(sort: Asc)])
 }
 
 model PostCommentLike {
@@ -231,4 +235,28 @@ model PostCommentLike {
   postComment PostComment @relation(fields: [postCommentId], references: [id], onDelete: Cascade)
 
   @@id([postCommentId, userId])
+}
+
+model Report {
+  id        String   @id @default(uuid()) @db.Uuid
+  type      Int      @db.SmallInt
+  userId    String   @db.Uuid
+  refType   String
+  refId     String   @db.Uuid
+  content   String?
+  createdAt DateTime @default(now())
+}
+
+model RefreshToken {
+  userId    String   @db.Uuid
+  token     String
+  updatedAt DateTime @default(now())
+  type      String
+  device    String
+  model     String
+  ip        String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, token])
 }

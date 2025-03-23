@@ -18,7 +18,7 @@ export class EventHandler {
     const [actor] = await this.db
       .selectFrom('User')
       .where('id', '=', actorId)
-      .select(['id', 'name', 'image'])
+      .select(['id', 'name', 'image', 'url'])
       .execute();
 
     if (!actor) return;
@@ -34,6 +34,7 @@ export class EventHandler {
             id: actor.id,
             name: actor.name,
             image: actor.image,
+            url: actor.url,
           },
         },
       })
@@ -84,7 +85,7 @@ export class EventHandler {
     const [actor] = await this.db
       .selectFrom('User')
       .where('id', '=', actorId)
-      .select(['id', 'name', 'image'])
+      .select(['id', 'name', 'image', 'url'])
       .execute();
 
     if (!actor) return;
@@ -101,6 +102,7 @@ export class EventHandler {
             id: actor.id,
             name: actor.name,
             image: actor.image,
+            url: actor.url,
           },
         },
       })
@@ -125,7 +127,7 @@ export class EventHandler {
     const [actor] = await this.db
       .selectFrom('User')
       .where('id', '=', actorId)
-      .select(['id', 'name', 'image'])
+      .select(['id', 'name', 'image', 'url'])
       .execute();
 
     if (!actor) return;
@@ -142,6 +144,7 @@ export class EventHandler {
             id: actor.id,
             name: actor.name,
             image: actor.image,
+            url: actor.url,
           },
         },
       })
@@ -164,7 +167,7 @@ export class EventHandler {
     const [actor] = await this.db
       .selectFrom('User')
       .where('id', '=', actorId)
-      .select(['id', 'name', 'image'])
+      .select(['id', 'name', 'image', 'url'])
       .execute();
 
     if (!actor) return;
@@ -181,6 +184,7 @@ export class EventHandler {
             id: actor.id,
             name: actor.name,
             image: actor.image,
+            url: actor.url,
           },
         },
       })
@@ -205,7 +209,7 @@ export class EventHandler {
     const [actor] = await this.db
       .selectFrom('User')
       .where('id', '=', actorId)
-      .select(['id', 'name', 'image'])
+      .select(['id', 'name', 'image', 'url'])
       .execute();
 
     if (!actor) return;
@@ -222,6 +226,7 @@ export class EventHandler {
             id: actor.id,
             name: actor.name,
             image: actor.image,
+            url: actor.url,
           },
         },
       })
@@ -246,7 +251,7 @@ export class EventHandler {
     const [actor] = await this.db
       .selectFrom('User')
       .where('id', '=', actorId)
-      .select(['id', 'name', 'image'])
+      .select(['id', 'name', 'image', 'url'])
       .execute();
 
     if (!actor) return;
@@ -263,6 +268,7 @@ export class EventHandler {
             id: actor.id,
             name: actor.name,
             image: actor.image,
+            url: actor.url,
           },
         },
       })
@@ -285,7 +291,7 @@ export class EventHandler {
     const [actor] = await this.db
       .selectFrom('User')
       .where('id', '=', actorId)
-      .select(['id', 'name', 'image'])
+      .select(['id', 'name', 'image', 'url'])
       .execute();
 
     if (!actor) return;
@@ -302,6 +308,7 @@ export class EventHandler {
             id: actor.id,
             name: actor.name,
             image: actor.image,
+            url: actor.url,
           },
         },
       })

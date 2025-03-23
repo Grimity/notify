@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@grimity/dto": "^1.0.6",
     "@types/aws-lambda": "^8.10.147",
     "@types/pg": "^8.11.10",
     "prisma": "^6.2.1",
