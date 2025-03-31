@@ -225,7 +225,7 @@ export class EventHandler {
       .values({
         id: uuid(),
         userId: user.id,
-        image: getImageUrl(actor.name),
+        image: getImageUrl(actor.image),
         link: getPostLink(postId),
         message: `${actor.name}님이 내 댓글에 답글을 달았어요`,
       })
