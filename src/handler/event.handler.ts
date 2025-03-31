@@ -11,6 +11,13 @@ import type {
 } from 'src/types';
 import { v4 as uuid } from 'uuid';
 
+import {
+  getImageUrl,
+  getFeedLink,
+  getProfileLink,
+  getPostLink,
+} from 'src/util';
+
 export class EventHandler {
   constructor(private db: Database) {}
 
@@ -28,15 +35,9 @@ export class EventHandler {
       .values({
         id: uuid(),
         userId,
-        data: {
-          type: 'FOLLOW',
-          actor: {
-            id: actor.id,
-            name: actor.name,
-            image: actor.image,
-            url: actor.url,
-          },
-        },
+        image: getImageUrl(actor.image),
+        link: getProfileLink(actor.url),
+        message: `${actor.name}님이 나를 팔로우했어요`,
       })
       .execute();
   }
@@ -56,13 +57,9 @@ export class EventHandler {
       .values({
         id: uuid(),
         userId: user.id,
-        data: {
-          type: 'FEED_LIKE',
-          feedId,
-          likeCount,
-          thumbnail: user.thumbnail,
-          title: user.title,
-        },
+        image: getImageUrl(user.thumbnail),
+        link: getFeedLink(feedId),
+        message: `${user.title}에 좋아요가 ${likeCount}개 달렸어요`,
       })
       .execute();
   }
@@ -95,16 +92,9 @@ export class EventHandler {
       .values({
         id: uuid(),
         userId: user.id,
-        data: {
-          type: 'FEED_COMMENT',
-          feedId,
-          actor: {
-            id: actor.id,
-            name: actor.name,
-            image: actor.image,
-            url: actor.url,
-          },
-        },
+        image: getImageUrl(actor.image),
+        link: getFeedLink(feedId),
+        message: `${actor.name}님이 내 그림에 댓글을 남겼어요`,
       })
       .execute();
   }
@@ -137,16 +127,9 @@ export class EventHandler {
       .values({
         id: uuid(),
         userId: user.id,
-        data: {
-          type: 'FEED_REPLY',
-          feedId,
-          actor: {
-            id: actor.id,
-            name: actor.name,
-            image: actor.image,
-            url: actor.url,
-          },
-        },
+        image: getImageUrl(actor.image),
+        link: getFeedLink(feedId),
+        message: `${actor.name}님이 내 댓글에 답글을 달았어요`,
       })
       .execute();
   }
@@ -177,16 +160,9 @@ export class EventHandler {
       .values({
         id: uuid(),
         userId: user.id,
-        data: {
-          type: 'FEED_MENTION',
-          feedId,
-          actor: {
-            id: actor.id,
-            name: actor.name,
-            image: actor.image,
-            url: actor.url,
-          },
-        },
+        image: getImageUrl(actor.image),
+        link: getFeedLink(feedId),
+        message: `${actor.name}님이 내 답글에 답글을 달았어요`,
       })
       .execute();
   }
@@ -219,16 +195,9 @@ export class EventHandler {
       .values({
         id: uuid(),
         userId: user.id,
-        data: {
-          type: 'POST_COMMENT',
-          postId,
-          actor: {
-            id: actor.id,
-            name: actor.name,
-            image: actor.image,
-            url: actor.url,
-          },
-        },
+        image: getImageUrl(actor.image),
+        link: getPostLink(postId),
+        message: `${actor.name}님이 내 게시글에 댓글을 달았어요`,
       })
       .execute();
   }
@@ -261,16 +230,9 @@ export class EventHandler {
       .values({
         id: uuid(),
         userId: user.id,
-        data: {
-          type: 'POST_REPLY',
-          postId,
-          actor: {
-            id: actor.id,
-            name: actor.name,
-            image: actor.image,
-            url: actor.url,
-          },
-        },
+        image: getImageUrl(actor.name),
+        link: getPostLink(postId),
+        message: `${actor.name}님이 내 댓글에 답글을 달았어요`,
       })
       .execute();
   }
@@ -301,16 +263,9 @@ export class EventHandler {
       .values({
         id: uuid(),
         userId: user.id,
-        data: {
-          type: 'POST_MENTION',
-          postId,
-          actor: {
-            id: actor.id,
-            name: actor.name,
-            image: actor.image,
-            url: actor.url,
-          },
-        },
+        image: getImageUrl(actor.image),
+        link: getPostLink(postId),
+        message: `${actor.name}님이 내 답글에 답글을 달았어요 `,
       })
       .execute();
   }

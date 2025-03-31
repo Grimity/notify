@@ -45,7 +45,9 @@ export type Notification = {
     userId: string;
     isRead: Generated<boolean>;
     createdAt: Generated<Timestamp>;
-    data: unknown;
+    link: string;
+    image: string | null;
+    message: string;
 };
 export type Post = {
     id: string;
