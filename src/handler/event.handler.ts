@@ -11,12 +11,7 @@ import type {
 } from 'src/types';
 import { v4 as uuid } from 'uuid';
 
-import {
-  getImageUrl,
-  getFeedLink,
-  getProfileLink,
-  getPostLink,
-} from 'src/util';
+import { getImageUrl, getFeedLink, getProfileLink, getPostLink } from '../util';
 
 export class EventHandler {
   constructor(private db: Database) {}
